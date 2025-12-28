@@ -70,8 +70,6 @@
 .navbar-middle {
   padding: 1rem 2rem;
   background-color: #000000;
-  position: sticky;
-  top: 0;
 }
 
 .navbar-middle-container {
@@ -236,8 +234,6 @@
 
 /* Bottom Navbar */
 .navbar-bottom {
-  position: sticky;
-  top: 0;
   background-color: #0a0a0a;
   border-top: 1px solid #1a1a1a;
   padding: 0;
