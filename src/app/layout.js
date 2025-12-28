@@ -12,6 +12,11 @@ const cairo = Cairo({
 export const metadata = {
   title: "Kilo Fresh",
   description: "Created by Zeyad Mashaal",
+  icons: {
+    icon: "/logo.ico",
+    shortcut: "/logo.ico",
+    apple: "/logo.ico",
+  },
 };
 
 export default function RootLayout({ children }) {

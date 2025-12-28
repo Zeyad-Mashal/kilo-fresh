@@ -16,12 +16,15 @@
   overflow: hidden;
   white-space: nowrap;
   width: 100%;
+  position: relative;
 }
 
 .sliding-text-wrapper {
   display: inline-flex;
   animation: slide-right-to-left 30s linear infinite;
   gap: 4rem;
+  will-change: transform;
+  animation-fill-mode: both;
 }
 
 .sliding-text-item {
@@ -39,6 +42,27 @@
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes slide-right-to-left-mobile {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Ensure animation starts from first item on mobile */
+@media (max-width: 768px) {
+  .sliding-text-container {
+    direction: rtl;
+  }
+
+  .sliding-text-wrapper {
+    animation: slide-right-to-left-mobile 20s linear infinite;
+    animation-fill-mode: both;
   }
 }
 
