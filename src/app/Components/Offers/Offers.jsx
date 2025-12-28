@@ -1,7 +1,67 @@
+"use client";
 import React from "react";
 import "./Offers.css";
 import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+
+// import required modules
+import { Navigation } from "swiper/modules";
+
 const Offers = () => {
+  const offersItems = [
+    {
+      id: 1,
+      image: "/images/p1.png",
+      discount: "-10%",
+      title: "بوكس الصفقة من طازة",
+      price: "100 ج.م",
+      oldPrice: "100 ج.م",
+    },
+    {
+      id: 2,
+      image: "/images/p1.png",
+      discount: "-10%",
+      title: "بوكس الصفقة من طازة",
+      price: "100 ج.م",
+      oldPrice: "100 ج.م",
+    },
+    {
+      id: 3,
+      image: "/images/p1.png",
+      discount: "-10%",
+      title: "بوكس الصفقة من طازة",
+      price: "100 ج.م",
+      oldPrice: "100 ج.م",
+    },
+    {
+      id: 4,
+      image: "/images/p1.png",
+      discount: "-10%",
+      title: "بوكس الصفقة من طازة",
+      price: "100 ج.م",
+      oldPrice: "100 ج.م",
+    },
+    {
+      id: 5,
+      image: "/images/p1.png",
+      discount: "-10%",
+      title: "بوكس الصفقة من طازة",
+      price: "100 ج.م",
+      oldPrice: "100 ج.م",
+    },
+    {
+      id: 6,
+      image: "/images/p1.png",
+      discount: "-10%",
+      title: "بوكس الصفقة من طازة",
+      price: "100 ج.م",
+      oldPrice: "100 ج.م",
+    },
+  ];
+
   return (
     <div className="offers">
       <div className="offers_container">
@@ -18,95 +78,46 @@ const Offers = () => {
             <p>30 منتج</p>
             <button>عرض الكل</button>
           </div>
-          <div className="offers_item">
-            <Image
-              src={"/images/p1.png"}
-              alt="offers"
-              width={100}
-              height={100}
-            />
-            <span>-10%</span>
-            <h2>بوكس الصفقة من طازة</h2>
-            <div className="item_price">
-              <p>100 ج.م</p>
-              <p>100 ج.م</p>
+          {offersItems.map((item) => (
+            <div key={item.id} className="offers_item offers_item_desktop">
+              <Image src={item.image} alt="offers" width={100} height={100} />
+              <span>{item.discount}</span>
+              <h2>{item.title}</h2>
+              <div className="item_price">
+                <p>{item.price}</p>
+                <p>{item.oldPrice}</p>
+              </div>
+              <button>اشتري الآن</button>
             </div>
-            <button>اشتري الآن</button>
-          </div>
-          <div className="offers_item">
-            <Image
-              src={"/images/p1.png"}
-              alt="offers"
-              width={100}
-              height={100}
-            />
-            <span>-10%</span>
-            <h2>بوكس الصفقة من طازة</h2>
-            <div className="item_price">
-              <p>100 ج.م</p>
-              <p>100 ج.م</p>
-            </div>
-            <button>اشتري الآن</button>
-          </div>
-          <div className="offers_item">
-            <Image
-              src={"/images/p1.png"}
-              alt="offers"
-              width={100}
-              height={100}
-            />
-            <span>-10%</span>
-            <h2>بوكس الصفقة من طازة</h2>
-            <div className="item_price">
-              <p>100 ج.م</p>
-              <p>100 ج.م</p>
-            </div>
-            <button>اشتري الآن</button>
-          </div>
-          <div className="offers_item">
-            <Image
-              src={"/images/p1.png"}
-              alt="offers"
-              width={100}
-              height={100}
-            />
-            <span>-10%</span>
-            <h2>بوكس الصفقة من طازة</h2>
-            <div className="item_price">
-              <p>100 ج.م</p>
-              <p>100 ج.م</p>
-            </div>
-            <button>اشتري الآن</button>
-          </div>
-          <div className="offers_item">
-            <Image
-              src={"/images/p1.png"}
-              alt="offers"
-              width={100}
-              height={100}
-            />
-            <span>-10%</span>
-            <h2>بوكس الصفقة من طازة</h2>
-            <div className="item_price">
-              <p>100 ج.م</p>
-              <p>100 ج.م</p>
-            </div>
-            <button>اشتري الآن</button>
-          </div>
-          <div className="offers_item">
-            <Image
-              src={"/images/p1.png"}
-              alt="offers"
-              width={100}
-              height={100}
-            />
-            <span>-10%</span>
-            <h2>بوكس الصفقة من طازة</h2>
-            <div className="item_price">
-              <p>100 ج.م</p>
-              <p>100 ج.م</p>
-            </div>
-            <button>اشتري الآن</button>
+          ))}
+          <div className="offers_items_mobile">
+            <Swiper
+              slidesPerView={1.5}
+              spaceBetween={10}
+              navigation={true}
+              modules={[Navigation]}
+              className="offers_swiper"
+            >
+              {offersItems.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <div className="offers_item">
+                    <Image
+                      src={item.image}
+                      alt="offers"
+                      width={100}
+                      height={100}
+                    />
+                    <span>{item.discount}</span>
+                    <h2>{item.title}</h2>
+                    <div className="item_price">
+                      <p>{item.price}</p>
+                      <p>{item.oldPrice}</p>
+                    </div>
+                    <button>اشتري الآن</button>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       </div>
