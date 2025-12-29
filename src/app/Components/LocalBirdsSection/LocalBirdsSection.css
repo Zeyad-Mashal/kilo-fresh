@@ -1,0 +1,159 @@
+.LocalBirdsSection {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+.LocalBirdsSection_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.LocalBirdsSection_container > h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #d4af37;
+  padding-bottom: 0.5rem;
+}
+.LocalBirdsSection_list {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.LocalBirdsSection_items_mobile {
+  display: none;
+  width: 100%;
+}
+.LocalBirdsSection_item_desktop {
+  display: flex;
+}
+.LocalBirdsSection_swiper {
+  width: 100%;
+  padding: 0.5rem 0;
+}
+.LocalBirdsSection_swiper .swiper-slide {
+  height: auto;
+  display: flex;
+}
+.LocalBirdsSection_swiper .swiper-button-next,
+.LocalBirdsSection_swiper .swiper-button-prev {
+  color: #d4af37;
+}
+.LocalBirdsSection_swiper .swiper-button-next:after,
+.LocalBirdsSection_swiper .swiper-button-prev:after {
+  font-size: 1.5rem;
+}
+.LocalBirdsSection_item {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: #111;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.LocalBirdsSection_item > img {
+  width: 100%;
+  height: auto;
+}
+.LocalBirdsSection_item > span {
+  background-color: #c2201b;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.LocalBirdsSection_item > h2 {
+  font-size: 1.2rem;
+}
+.LocalBirdsSection_item > .LocalBirdsSection_item_price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+.LocalBirdsSection_item > .LocalBirdsSection_item_price > p {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}
+.LocalBirdsSection_item > .LocalBirdsSection_item_price > p:last-child {
+  text-decoration: line-through;
+  color: #666;
+  font-size: 1rem;
+}
+.LocalBirdsSection_item > button {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: #c2201b;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.LocalBirdsSection_item > button:hover {
+  background-color: #a11712;
+}
+.LocalBirdsSection_list > button {
+  border: 1px solid #fff;
+  padding: 0.5rem 1rem;
+  width: 150px;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s ease;
+}
+.LocalBirdsSection_list > button:hover {
+  background-color: #fff;
+  color: #a11712;
+}
+@media (max-width: 768px) {
+  .LocalBirdsSection {
+    padding: 10px;
+  }
+  .LocalBirdsSection_item_desktop {
+    display: none;
+  }
+  .LocalBirdsSection_items_mobile {
+    display: block;
+    width: 100%;
+  }
+  .LocalBirdsSection_swiper {
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+  .LocalBirdsSection_swiper .swiper-button-next,
+  .LocalBirdsSection_swiper .swiper-button-prev {
+    width: 30px;
+    height: 30px;
+  }
+  .LocalBirdsSection_swiper .swiper-button-next:after,
+  .LocalBirdsSection_swiper .swiper-button-prev:after {
+    font-size: 1rem;
+  }
+  .LocalBirdsSection_swiper .swiper-slide {
+    width: auto;
+  }
+}
+

@@ -1,0 +1,159 @@
+.CutsSection {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+.CutsSection_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.CutsSection_container > h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #d4af37;
+  padding-bottom: 0.5rem;
+}
+.CutsSection_list {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.CutsSection_items_mobile {
+  display: none;
+  width: 100%;
+}
+.CutsSection_item_desktop {
+  display: flex;
+}
+.CutsSection_swiper {
+  width: 100%;
+  padding: 0.5rem 0;
+}
+.CutsSection_swiper .swiper-slide {
+  height: auto;
+  display: flex;
+}
+.CutsSection_swiper .swiper-button-next,
+.CutsSection_swiper .swiper-button-prev {
+  color: #d4af37;
+}
+.CutsSection_swiper .swiper-button-next:after,
+.CutsSection_swiper .swiper-button-prev:after {
+  font-size: 1.5rem;
+}
+.CutsSection_item {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: #111;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.CutsSection_item > img {
+  width: 100%;
+  height: auto;
+}
+.CutsSection_item > span {
+  background-color: #c2201b;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.CutsSection_item > h2 {
+  font-size: 1.2rem;
+}
+.CutsSection_item > .CutsSection_item_price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+.CutsSection_item > .CutsSection_item_price > p {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}
+.CutsSection_item > .CutsSection_item_price > p:last-child {
+  text-decoration: line-through;
+  color: #666;
+  font-size: 1rem;
+}
+.CutsSection_item > button {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: #c2201b;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.CutsSection_item > button:hover {
+  background-color: #a11712;
+}
+.CutsSection_list > button {
+  border: 1px solid #fff;
+  padding: 0.5rem 1rem;
+  width: 150px;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s ease;
+}
+.CutsSection_list > button:hover {
+  background-color: #fff;
+  color: #a11712;
+}
+@media (max-width: 768px) {
+  .CutsSection {
+    padding: 10px;
+  }
+  .CutsSection_item_desktop {
+    display: none;
+  }
+  .CutsSection_items_mobile {
+    display: block;
+    width: 100%;
+  }
+  .CutsSection_swiper {
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+  .CutsSection_swiper .swiper-button-next,
+  .CutsSection_swiper .swiper-button-prev {
+    width: 30px;
+    height: 30px;
+  }
+  .CutsSection_swiper .swiper-button-next:after,
+  .CutsSection_swiper .swiper-button-prev:after {
+    font-size: 1rem;
+  }
+  .CutsSection_swiper .swiper-slide {
+    width: auto;
+  }
+}
+

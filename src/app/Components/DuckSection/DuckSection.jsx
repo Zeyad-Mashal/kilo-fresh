@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import "./Offers.css";
+import "./DuckSection.css";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
@@ -9,105 +9,119 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Navigation } from "swiper/modules";
+import { FaRegEye } from "react-icons/fa";
 
-const Offers = () => {
-  const offersItems = [
+const DuckSection = () => {
+  const duckItems = [
     {
       id: 1,
       image: "/images/p1.png",
       discount: "-10%",
-      title: "بوكس الصفقة من طازة",
+      title: "البط",
       price: "100 ج.م",
-      oldPrice: "100 ج.م",
+      oldPrice: "120 ج.م",
     },
     {
       id: 2,
       image: "/images/p1.png",
       discount: "-10%",
-      title: "بوكس الصفقة من طازة",
+      title: "البط",
       price: "100 ج.م",
-      oldPrice: "100 ج.م",
+      oldPrice: "120 ج.م",
     },
     {
       id: 3,
       image: "/images/p1.png",
       discount: "-10%",
-      title: "بوكس الصفقة من طازة",
+      title: "البط",
       price: "100 ج.م",
-      oldPrice: "100 ج.م",
+      oldPrice: "120 ج.م",
     },
     {
       id: 4,
       image: "/images/p1.png",
       discount: "-10%",
-      title: "بوكس الصفقة من طازة",
+      title: "البط",
       price: "100 ج.م",
-      oldPrice: "100 ج.م",
+      oldPrice: "120 ج.م",
     },
     {
       id: 5,
       image: "/images/p1.png",
       discount: "-10%",
-      title: "بوكس الصفقة من طازة",
+      title: "البط",
       price: "100 ج.م",
-      oldPrice: "100 ج.م",
+      oldPrice: "120 ج.م",
     },
     {
       id: 6,
       image: "/images/p1.png",
       discount: "-10%",
-      title: "بوكس الصفقة من طازة",
+      title: "البط",
       price: "100 ج.م",
-      oldPrice: "100 ج.م",
+      oldPrice: "120 ج.م",
+    },
+    {
+      id: 7,
+      image: "/images/p1.png",
+      discount: "-10%",
+      title: "البط",
+      price: "100 ج.م",
+      oldPrice: "120 ج.م",
+    },
+    {
+      id: 8,
+      image: "/images/p1.png",
+      discount: "-10%",
+      title: "البط",
+      price: "100 ج.م",
+      oldPrice: "120 ج.م",
     },
   ];
 
   return (
-    <div className="offers">
-      <div className="offers_container">
-        <h2>العروض</h2>
-        <div className="offers_list">
-          <div className="offers_box">
-            <Image
-              src={"/images/offers.jpg"}
-              alt="offers"
-              width={100}
-              height={100}
-            />
-            <h2>العروض الحاليه</h2>
-            <p>30 منتج</p>
-            <button>عرض الكل</button>
-          </div>
-          {offersItems.map((item) => (
-            <div key={item.id} className="offers_item offers_item_desktop">
-              <Image src={item.image} alt="offers" width={100} height={100} />
+    <div className="DuckSection">
+      <div className="DuckSection_container">
+        <h1>البط</h1>
+        <div className="DuckSection_list">
+          {duckItems.map((item) => (
+            <div
+              key={item.id}
+              className="DuckSection_item DuckSection_item_desktop"
+            >
+              <Image
+                src={item.image}
+                alt="DuckSection_item"
+                width={100}
+                height={100}
+              />
               <span>{item.discount}</span>
               <h2>{item.title}</h2>
-              <div className="item_price">
+              <div className="DuckSection_item_price">
                 <p>{item.price}</p>
                 <p>{item.oldPrice}</p>
               </div>
               <button>اشتري الآن</button>
             </div>
           ))}
-          <div className="offers_items_mobile">
+          <div className="DuckSection_items_mobile">
             <Swiper
               slidesPerView={1.5}
               spaceBetween={10}
-              className="offers_swiper"
+              className="DuckSection_swiper"
             >
-              {offersItems.map((item) => (
+              {duckItems.map((item) => (
                 <SwiperSlide key={item.id}>
-                  <div className="offers_item">
+                  <div className="DuckSection_item">
                     <Image
                       src={item.image}
-                      alt="offers"
+                      alt="DuckSection_item"
                       width={100}
                       height={100}
                     />
                     <span>{item.discount}</span>
                     <h2>{item.title}</h2>
-                    <div className="item_price">
+                    <div className="DuckSection_item_price">
                       <p>{item.price}</p>
                       <p>{item.oldPrice}</p>
                     </div>
@@ -117,10 +131,15 @@ const Offers = () => {
               ))}
             </Swiper>
           </div>
+          <button>
+            عرض الكل
+            <FaRegEye />
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default Offers;
+export default DuckSection;
+
