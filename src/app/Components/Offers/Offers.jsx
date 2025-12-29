@@ -103,7 +103,10 @@ const Offers = () => {
             >
               {offersItems.map((item) => (
                 <SwiperSlide key={item.id}>
-                  <div className="offers_item">
+                  <div
+                    className="offers_item"
+                    onClick={() => router.push(`/pages/product`)}
+                  >
                     <Image
                       src={item.image}
                       alt="offers"
