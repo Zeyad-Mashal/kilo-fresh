@@ -83,7 +83,7 @@ const Offers = () => {
             <div
               key={item.id}
               className="offers_item offers_item_desktop"
-              onClick={() => router.push(`/pages/product/`)}
+              onClick={() => router.push(`/pages/product`)}
             >
               <Image src={item.image} alt="offers" width={100} height={100} />
               <span>{item.discount}</span>
