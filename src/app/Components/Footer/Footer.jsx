@@ -46,11 +46,6 @@ const Footer = () => {
                   01156617722
                 </a>
               </li>
-              <li>
-                <a href="/" target="_blank" rel="noopener noreferrer">
-                  اللوكشين
-                </a>
-              </li>
             </ul>
           </div>
         </div>

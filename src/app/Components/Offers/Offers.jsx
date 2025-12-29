@@ -9,8 +9,9 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Navigation } from "swiper/modules";
-
+import { useRouter } from "next/navigation";
 const Offers = () => {
+  const router = useRouter();
   const offersItems = [
     {
       id: 1,
@@ -79,7 +80,11 @@ const Offers = () => {
             <button>عرض الكل</button>
           </div>
           {offersItems.map((item) => (
-            <div key={item.id} className="offers_item offers_item_desktop">
+            <div
+              key={item.id}
+              className="offers_item offers_item_desktop"
+              onClick={() => router.push(`/pages/product/`)}
+            >
               <Image src={item.image} alt="offers" width={100} height={100} />
               <span>{item.discount}</span>
               <h2>{item.title}</h2>

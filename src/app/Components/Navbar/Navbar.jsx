@@ -9,7 +9,7 @@ const Navbar = () => {
   const router = useRouter();
   const navLinks = [
     { name: "الرئيسية", href: "/" },
-    { name: "المنتجات", href: "/products" },
+    { name: "المنتجات", href: "/pages/shop" },
     { name: "عنا", href: "/about" },
     { name: "اتصل بنا", href: "/contact" },
   ];

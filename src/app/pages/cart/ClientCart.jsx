@@ -173,9 +173,7 @@ const ClientCart = () => {
                   </div>
                 </div>
                 <button className="checkout_btn">إتمام الطلب</button>
-                <button className="continue_shopping_btn">
-                  متابعة التسوق
-                </button>
+                <button className="continue_shopping_btn">متابعة التسوق</button>
               </div>
             </div>
           </div>
