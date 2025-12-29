@@ -84,14 +84,15 @@
   font-size: 1.5rem;
 }
 .offers_box > button {
-  top: 65%;
+  top: 70%;
   font-size: 1.5rem;
   color: #fff;
   border-radius: 0.5rem;
-  border: 1px solid #dca736;
+  border: 2px solid #dca736;
   padding: 0.5rem 1rem;
   font-size: 1rem;
   transition: 0.3s ease;
+  font-weight: bold;
 }
 .offers_box > button:hover {
   color: #fff;

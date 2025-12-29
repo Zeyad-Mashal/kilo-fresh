@@ -10,7 +10,7 @@ const Navbar = () => {
   const navLinks = [
     { name: "الرئيسية", href: "/" },
     { name: "المنتجات", href: "/pages/shop" },
-    { name: "عنا", href: "/about" },
+    { name: "عروضنا", href: "/pages/offers" },
     { name: "اتصل بنا", href: "/contact" },
   ];
 

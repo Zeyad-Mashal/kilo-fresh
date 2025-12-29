@@ -24,13 +24,7 @@ const ClientProduct = () => {
     price: 100,
     oldPrice: 120,
     discount: "-10%",
-    images: [
-      "/images/p1.png",
-      "/images/p1.png",
-      "/images/p1.png",
-      "/images/p1.png",
-      "/images/p1.png",
-    ],
+    images: ["/images/p1.png", "/images/c1.jpg", "/images/logo.png"],
   };
 
   const relatedProducts = [
