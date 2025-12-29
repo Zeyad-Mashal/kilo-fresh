@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import Image from "next/image";
-
+import { useRouter } from "next/navigation";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount] = useState(3); // Example cart count
-
+  const router = useRouter();
   const navLinks = [
     { name: "الرئيسية", href: "/" },
     { name: "المنتجات", href: "/products" },
@@ -76,7 +76,10 @@ const Navbar = () => {
           <div className="navbar-right">
             {/* Cart Icon with Counter */}
             <div className="navbar-cart">
-              <button className="cart-button">
+              <button
+                className="cart-button"
+                onClick={() => router.push("/pages/cart")}
+              >
                 <svg
                   width="24"
                   height="24"
