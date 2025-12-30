@@ -77,3 +77,30 @@
   align-items: center;
   cursor: pointer;
 }
+@media (max-width: 768px) {
+  .shop_page {
+    padding: 10px;
+  }
+  .shop_title > h1 {
+    font-size: 1.6rem;
+  }
+  .shop_list {
+    gap: 15px;
+  }
+  .shop_item {
+    width: 47%;
+  }
+  .shop_item > h2 {
+    font-size: 1rem;
+  }
+  .shop_item_price > p:first-child {
+    font-size: 1rem;
+  }
+  .shop_item_price > p:last-child {
+    font-size: 0.8rem;
+  }
+  .shop_item > button {
+    font-size: 0.8rem;
+    height: 30px;
+  }
+}

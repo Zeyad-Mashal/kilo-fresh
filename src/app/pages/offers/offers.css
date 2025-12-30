@@ -110,3 +110,44 @@
   color: #999;
   margin: 0;
 }
+@media (max-width: 768px) {
+  .offers {
+    padding: 10px;
+  }
+  .offers_container > h1 {
+    font-size: 1.6rem;
+  }
+  .offers_list {
+    gap: 15px;
+  }
+  .offers_item {
+    width: 45%;
+  }
+  .offers_item > span {
+    font-size: 0.8rem;
+  }
+  .offers_item > h2 {
+    font-size: 1rem;
+  }
+  .offers_item_price > p:first-child {
+    font-size: 1.1rem;
+  }
+  .offers_item_price > p:last-child {
+    font-size: 0.8rem;
+  }
+  .offers_item > button {
+    font-size: 0.8rem;
+  }
+  .offers_empty {
+    padding: 2rem 1rem;
+  }
+  .offers_empty_icon {
+    font-size: 3rem;
+  }
+  .offers_empty > h2 {
+    font-size: 1.5rem;
+  }
+  .offers_empty > p {
+    font-size: 1rem;
+  }
+}

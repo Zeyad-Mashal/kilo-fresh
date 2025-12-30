@@ -10,7 +10,6 @@ import "swiper/css/navigation";
 // import required modules
 import { Navigation } from "swiper/modules";
 import { useRouter } from "next/navigation";
-import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 const Offers = () => {
   const router = useRouter();
   const offersItems = [
@@ -64,56 +63,6 @@ const Offers = () => {
     },
   ];
 
-  const ProductCard = ({ item, index }) => {
-    const [ref, isVisible] = useScrollAnimation({ once: false });
-    const delayClass = `scroll-animate-delay-${(index % 6) + 1}`;
-
-    return (
-      <div
-        ref={ref}
-        className={`offers_item offers_item_desktop scroll-animate ${
-          isVisible ? "visible" : ""
-        } ${delayClass}`}
-        onClick={() => router.push(`/pages/product`)}
-      >
-        <Image src={item.image} alt="offers" width={100} height={100} />
-        <span>{item.discount}</span>
-        <h2>{item.title}</h2>
-        <div className="item_price">
-          <p>{item.price}</p>
-          <p>{item.oldPrice}</p>
-        </div>
-        <button onClick={() => router.push("/pages/offers")}>اشتري الآن</button>
-      </div>
-    );
-  };
-
-  const MobileCard = ({ item, index }) => {
-    const [ref, isVisible] = useScrollAnimation({ once: false });
-    return (
-      <SwiperSlide key={item.id}>
-        <div
-          ref={ref}
-          className={`offers_item scroll-animate ${
-            isVisible ? "visible" : ""
-          } scroll-animate-delay-${(index % 6) + 1}`}
-          onClick={() => router.push(`/pages/product`)}
-        >
-          <Image src={item.image} alt="offers" width={100} height={100} />
-          <span>{item.discount}</span>
-          <h2>{item.title}</h2>
-          <div className="item_price">
-            <p>{item.price}</p>
-            <p>{item.oldPrice}</p>
-          </div>
-          <button onClick={() => router.push("/pages/offers")}>
-            اشتري الآن
-          </button>
-        </div>
-      </SwiperSlide>
-    );
-  };
-
   return (
     <div className="offers">
       <div className="offers_container">
@@ -128,12 +77,23 @@ const Offers = () => {
             />
             <h2>العروض الحاليه</h2>
             <p>30 منتج</p>
-            <button onClick={() => router.push("/pages/offers")}>
-              عرض الكل
-            </button>
+            <button>عرض الكل</button>
           </div>
-          {offersItems.map((item, index) => (
-            <ProductCard key={item.id} item={item} index={index} />
+          {offersItems.map((item) => (
+            <div
+              key={item.id}
+              className="offers_item offers_item_desktop"
+              onClick={() => router.push(`/pages/product`)}
+            >
+              <Image src={item.image} alt="offers" width={100} height={100} />
+              <span>{item.discount}</span>
+              <h2>{item.title}</h2>
+              <div className="item_price">
+                <p>{item.price}</p>
+                <p>{item.oldPrice}</p>
+              </div>
+              <button>اشتري الآن</button>
+            </div>
           ))}
           <div className="offers_items_mobile">
             <Swiper
@@ -141,8 +101,27 @@ const Offers = () => {
               spaceBetween={10}
               className="offers_swiper"
             >
-              {offersItems.map((item, index) => (
-                <MobileCard key={item.id} item={item} index={index} />
+              {offersItems.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <div
+                    className="offers_item"
+                    onClick={() => router.push(`/pages/product`)}
+                  >
+                    <Image
+                      src={item.image}
+                      alt="offers"
+                      width={100}
+                      height={100}
+                    />
+                    <span>{item.discount}</span>
+                    <h2>{item.title}</h2>
+                    <div className="item_price">
+                      <p>{item.price}</p>
+                      <p>{item.oldPrice}</p>
+                    </div>
+                    <button>اشتري الآن</button>
+                  </div>
+                </SwiperSlide>
               ))}
             </Swiper>
           </div>

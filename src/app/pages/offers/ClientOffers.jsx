@@ -1,9 +1,6 @@
-"use client";
 import React from "react";
 import "./offers.css";
 import Image from "next/image";
-import { useScrollAnimation } from "../../hooks/useScrollAnimation";
-import { useRouter } from "next/navigation";
 const ClientOffers = ({
   offers = [
     {
@@ -36,36 +33,6 @@ const ClientOffers = ({
     },
   ],
 }) => {
-  const router = useRouter();
-  const ProductCard = ({ offer, index }) => {
-    const [ref, isVisible] = useScrollAnimation({ once: false });
-    const delayClass = `scroll-animate-delay-${(index % 6) + 1}`;
-
-    return (
-      <div
-        ref={ref}
-        className={`offers_item scroll-animate ${
-          isVisible ? "visible" : ""
-        } ${delayClass}`}
-        onClick={() => router.push("/pages/product")}
-      >
-        <Image
-          src={offer.image || "/images/p1.png"}
-          alt="offer image"
-          width={100}
-          height={100}
-        />
-        <span>{offer.discount || "-10%"}</span>
-        <h2>{offer.title || "فراخ بلدي"}</h2>
-        <div className="offers_item_price">
-          <p>{offer.price || "90 جنيه"}</p>
-          <p>{offer.originalPrice || "100 جنيه"}</p>
-        </div>
-        <button>اشتري الآن</button>
-      </div>
-    );
-  };
-
   return (
     <div className="offers">
       <div className="offers_container">
@@ -79,7 +46,21 @@ const ClientOffers = ({
         ) : (
           <div className="offers_list">
             {offers.map((offer, index) => (
-              <ProductCard key={index} offer={offer} index={index} />
+              <div key={index} className="offers_item">
+                <Image
+                  src={offer.image || "/images/p1.png"}
+                  alt="offer image"
+                  width={100}
+                  height={100}
+                />
+                <span>{offer.discount || "-10%"}</span>
+                <h2>{offer.title || "فراخ بلدي"}</h2>
+                <div className="offers_item_price">
+                  <p>{offer.price || "90 جنيه"}</p>
+                  <p>{offer.originalPrice || "100 جنيه"}</p>
+                </div>
+                <button>اشتري الآن</button>
+              </div>
             ))}
           </div>
         )}
