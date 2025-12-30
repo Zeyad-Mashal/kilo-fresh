@@ -6,7 +6,6 @@ import { FaPlus, FaMinus, FaTrash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 const ClientCart = () => {
   const router = useRouter();
-  // Sample cart data - in real app, this would come from state management
   const [cartItems, setCartItems] = useState([
     {
       id: 1,

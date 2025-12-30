@@ -1,0 +1,112 @@
+.offers {
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  color: #fff;
+}
+.offers_container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.offers_container > h1 {
+  font-size: 2.5rem;
+  border-bottom: 2px solid #d4af37;
+  padding-bottom: 0.5rem;
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+.offers_list {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.offers_item {
+  width: 300px;
+  height: auto;
+  background-color: #222;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  border: 2px solid #c2201b;
+  position: relative;
+}
+.offers_item:hover {
+  scale: 1.01;
+}
+.offers_item > img {
+  width: 100%;
+  border-radius: 10px;
+}
+.offers_item > span {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #c2201b;
+  background-color: #222;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.offers_item > h2 {
+  font-size: 1.3rem;
+}
+.offers_item_price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.offers_item_price > p:first-child {
+  font-size: 1.5rem;
+}
+.offers_item_price > p:last-child {
+  font-size: 1rem;
+  color: #999;
+  text-decoration: line-through;
+}
+.offers_item > button {
+  width: 100%;
+  height: 40px;
+  background-color: #d4af37;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.offers_empty {
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+.offers_empty_icon {
+  font-size: 5rem;
+  opacity: 0.7;
+}
+.offers_empty > h2 {
+  font-size: 2rem;
+  color: #d4af37;
+  margin: 0;
+}
+.offers_empty > p {
+  font-size: 1.2rem;
+  color: #999;
+  margin: 0;
+}

@@ -10,8 +10,10 @@ import "swiper/css/navigation";
 // import required modules
 import { Navigation } from "swiper/modules";
 import { FaRegEye } from "react-icons/fa";
-
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
+import { useRouter } from "next/navigation";
 const ChickenSection = () => {
+  const router = useRouter();
   const chickenItems = [
     {
       id: 1,
@@ -79,30 +81,71 @@ const ChickenSection = () => {
     },
   ];
 
+  const ProductCard = ({ item, index }) => {
+    const [ref, isVisible] = useScrollAnimation({ once: false });
+    const delayClass = `scroll-animate-delay-${(index % 6) + 1}`;
+
+    return (
+      <div
+        ref={ref}
+        className={`ChickenSection_item ChickenSection_item_desktop scroll-animate ${
+          isVisible ? "visible" : ""
+        } ${delayClass}`}
+        onClick={() => router.push("/pages/product")}
+      >
+        <Image
+          src={item.image}
+          alt="ChickenSection_item"
+          width={100}
+          height={100}
+        />
+        <span>{item.discount}</span>
+        <h2>{item.title}</h2>
+        <div className="ChickenSection_item_price">
+          <p>{item.price}</p>
+          <p>{item.oldPrice}</p>
+        </div>
+        <button>اشتري الآن</button>
+      </div>
+    );
+  };
+
+  const MobileCard = ({ item, index }) => {
+    const [ref, isVisible] = useScrollAnimation({ once: false });
+    return (
+      <SwiperSlide key={item.id}>
+        <div
+          ref={ref}
+          className={`ChickenSection_item scroll-animate ${
+            isVisible ? "visible" : ""
+          } scroll-animate-delay-${(index % 6) + 1}`}
+          onClick={() => router.push("/pages/product")}
+        >
+          <Image
+            src={item.image}
+            alt="ChickenSection_item"
+            width={100}
+            height={100}
+          />
+          <span>{item.discount}</span>
+          <h2>{item.title}</h2>
+          <div className="ChickenSection_item_price">
+            <p>{item.price}</p>
+            <p>{item.oldPrice}</p>
+          </div>
+          <button>اشتري الآن</button>
+        </div>
+      </SwiperSlide>
+    );
+  };
+
   return (
     <div className="ChickenSection">
       <div className="ChickenSection_container">
         <h1>الدجاج</h1>
         <div className="ChickenSection_list">
-          {chickenItems.map((item) => (
-            <div
-              key={item.id}
-              className="ChickenSection_item ChickenSection_item_desktop"
-            >
-              <Image
-                src={item.image}
-                alt="ChickenSection_item"
-                width={100}
-                height={100}
-              />
-              <span>{item.discount}</span>
-              <h2>{item.title}</h2>
-              <div className="ChickenSection_item_price">
-                <p>{item.price}</p>
-                <p>{item.oldPrice}</p>
-              </div>
-              <button>اشتري الآن</button>
-            </div>
+          {chickenItems.map((item, index) => (
+            <ProductCard key={item.id} item={item} index={index} />
           ))}
           <div className="ChickenSection_items_mobile">
             <Swiper
@@ -110,28 +153,17 @@ const ChickenSection = () => {
               spaceBetween={10}
               className="ChickenSection_swiper"
             >
-              {chickenItems.map((item) => (
-                <SwiperSlide key={item.id}>
-                  <div className="ChickenSection_item">
-                    <Image
-                      src={item.image}
-                      alt="ChickenSection_item"
-                      width={100}
-                      height={100}
-                    />
-                    <span>{item.discount}</span>
-                    <h2>{item.title}</h2>
-                    <div className="ChickenSection_item_price">
-                      <p>{item.price}</p>
-                      <p>{item.oldPrice}</p>
-                    </div>
-                    <button>اشتري الآن</button>
-                  </div>
-                </SwiperSlide>
+              {chickenItems.map((item, index) => (
+                <MobileCard
+                  key={item.id}
+                  item={item}
+                  index={index}
+                  onClick={() => router.push("/pages/product")}
+                />
               ))}
             </Swiper>
           </div>
-          <button>
+          <button onClick={() => router.push("/pages/shop")}>
             عرض الكل
             <FaRegEye />
           </button>
