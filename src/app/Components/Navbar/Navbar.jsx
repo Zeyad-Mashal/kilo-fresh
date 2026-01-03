@@ -1,17 +1,41 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Navbar.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { getAllCategories } from "../../API/Categories/GetCategories";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount] = useState(3); // Example cart count
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const router = useRouter();
+
+  // Fetch categories on component mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true);
+      const result = await getAllCategories();
+
+      if (result.success) {
+        setCategories(result.categories || []);
+        setError(null);
+      } else {
+        setError(result.error);
+        setCategories([]);
+      }
+      setLoading(false);
+    };
+
+    fetchCategories();
+  }, []);
+
   const navLinks = [
     { name: "الرئيسية", href: "/" },
     { name: "المنتجات", href: "/pages/shop" },
     { name: "عروضنا", href: "/pages/offers" },
-    { name: "اتصل بنا", href: "/contact" },
   ];
 
   const slidingTexts = [
@@ -146,6 +170,18 @@ const Navbar = () => {
               </a>
             </li>
           ))}
+          {/* Categories from API */}
+          {!loading &&
+            categories.map((category) => (
+              <li key={category._id || category.id}>
+                <a
+                  href={`/pages/shop?category=${category._id || category.id}`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {category.name}
+                </a>
+              </li>
+            ))}
         </ul>
       </div>
     </nav>
