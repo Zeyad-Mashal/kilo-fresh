@@ -176,7 +176,11 @@ const Navbar = () => {
               <li key={category._id || category.id}>
                 <a
                   href={`/pages/shop?category=${category._id || category.id}`}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push(`/pages/shop?category=${category._id || category.id}`);
+                    setIsMenuOpen(false);
+                  }}
                 >
                   {category.name}
                 </a>

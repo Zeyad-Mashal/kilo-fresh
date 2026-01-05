@@ -1,8 +1,12 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ClientShop from "./ClientShop";
 
 const page = () => {
-  return <ClientShop />;
+  return (
+    <Suspense fallback={<div>جاري التحميل...</div>}>
+      <ClientShop />
+    </Suspense>
+  );
 };
 
 export default page;
