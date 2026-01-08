@@ -30,7 +30,7 @@ const Hero = () => {
       >
         <SwiperSlide>
           <Image
-            src="/images/bannertest.jpg"
+            src="/images/banner1.jpg"
             alt="hero"
             width={1000}
             height={1000}
@@ -38,7 +38,7 @@ const Hero = () => {
         </SwiperSlide>
         <SwiperSlide>
           <Image
-            src="/images/bannertest.jpg"
+            src="/images/banner2.jpg"
             alt="hero"
             width={1000}
             height={1000}
@@ -46,7 +46,7 @@ const Hero = () => {
         </SwiperSlide>
         <SwiperSlide>
           <Image
-            src="/images/bannertest.jpg"
+            src="/images/banner3.jpg"
             alt="hero"
             width={1000}
             height={1000}
