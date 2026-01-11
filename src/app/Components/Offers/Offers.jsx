@@ -22,7 +22,8 @@ const Offers = () => {
   }, []);
 
   const calculateDiscount = (priceAfter, priceBefore) => {
-    return ((priceBefore - priceAfter) / priceBefore) * 100;
+    const discount = ((priceBefore - priceAfter) / priceBefore) * 100;
+    return discount.toFixed(0);
   };
 
   return (
@@ -45,7 +46,7 @@ const Offers = () => {
             <div
               key={item._id}
               className="offers_item offers_item_desktop"
-              onClick={() => router.push(`/pages/product`)}
+              onClick={() => router.push(`/pages/product?id=${item._id}`)}
             >
               <Image
                 src={item?.images[0]?.url}
@@ -76,7 +77,7 @@ const Offers = () => {
                 <SwiperSlide key={item._id}>
                   <div
                     className="offers_item"
-                    onClick={() => router.push(`/pages/product`)}
+                    onClick={() => router.push(`/pages/product?id=${item._id}`)}
                   >
                     <Image
                       src={item?.images[0]?.url}

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "./offers.css";
 import Image from "next/image";
+import Link from "next/link";
 import GetProductsOffers from "../../API/Products/GetProductsOffers";
 
 const ClientOffers = () => {
@@ -46,7 +47,12 @@ const ClientOffers = () => {
         ) : (
           <div className="offers_list">
             {offers.map((offer) => (
-              <div key={offer._id} className="offers_item">
+              <Link
+                key={offer._id}
+                href={`/pages/product?id=${offer._id}`}
+                className="offers_item"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
                 <Image
                   src={offer?.images?.[0]?.url || "/images/p1.png"}
                   alt={offer.name || "offer image"}
@@ -63,7 +69,7 @@ const ClientOffers = () => {
                   <p>{offer.priceBefore} ج.م</p>
                 </div>
                 <button>اشتري الآن</button>
-              </div>
+              </Link>
             ))}
           </div>
         )}

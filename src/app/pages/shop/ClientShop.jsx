@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "./shop.css";
 import Image from "next/image";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import GetAllProducts from "../../API/Products/GetProducts";
 import GetByCategory from "../../API/Products/GetByCategory";
@@ -56,7 +57,12 @@ const ClientShop = () => {
             ? <p>لا توجد منتجات</p>
             : allProducts.map((item) => {
                 return (
-                  <div className="shop_item" key={item._id}>
+                  <Link
+                    key={item._id}
+                    href={`/pages/product?id=${item._id}`}
+                    className="shop_item"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                     <Image
                       src={item?.images?.[0]?.url || "/images/p1.png"}
                       alt={item.name || "product"}
@@ -69,7 +75,7 @@ const ClientShop = () => {
                       <p>{item.priceBefore} ج.م</p>
                     </div>
                     <button>اشتري الآن</button>
-                  </div>
+                  </Link>
                 );
               })}
         </div>

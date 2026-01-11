@@ -3,70 +3,60 @@ import React, { useState, useEffect } from "react";
 import "./product.css";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import GetProductById from "../../API/Products/GetProductById";
 
 const ClientProduct = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [viewingCount, setViewingCount] = useState(13);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const searchParams = useSearchParams();
+  const productId = searchParams.get("id");
 
-  // Sample product data
-  const product = {
-    id: 1,
-    title: "الدجاج المشوي الطازج",
-    description: `هذا منتج عالي الجودة من الدجاج المشوي الطازج، يتم تحضيره بعناية فائقة باستخدام أفضل المكونات الطبيعية. يتم تتبيل الدجاج بمزيج من التوابل المميزة والبهارات العطرية التي تعطيه نكهة لا تقاوم.
+  useEffect(() => {
+    if (productId) {
+      const fetchProduct = () => {
+        return new Promise((resolve) => {
+          let resolved = false;
+          const setProductData = (productData) => {
+            if (!resolved) {
+              setProduct(productData);
+              resolved = true;
+              setLoading(false);
+              resolve();
+            }
+          };
 
-الدجاج المشوي لدينا يتم تحضيره يومياً في مطابخنا المطهرة والمعتمدة، مما يضمن لك الحصول على منتج طازج وصحي. نستخدم فقط الدجاج الطازج من المزارع الموثوقة التي تتبع أعلى معايير الجودة والسلامة.
+          const setErrorData = (errorMessage) => {
+            if (!resolved) {
+              setError(errorMessage);
+              resolved = true;
+              setLoading(false);
+              resolve();
+            }
+          };
 
-يتم شوي الدجاج على نار هادئة لضمان نضجه بشكل متساوي مع الحفاظ على العصارة الطبيعية والطعم اللذيذ. النتيجة هي دجاج مشوي طري من الداخل ومقرمش من الخارج، مليء بالنكهات الرائعة.
+          GetProductById(setProductData, setErrorData, () => {}, productId);
+        });
+      };
 
-هذا المنتج مثالي للوجبات العائلية، المناسبات الخاصة، أو حتى كوجبة سريعة وصحية. يمكنك تناوله ساخناً مباشرة بعد الشراء، أو تسخينه لاحقاً مع الحفاظ على طعمه الرائع.
+      fetchProduct();
+    } else {
+      setError("Product ID is required");
+      setLoading(false);
+    }
+  }, [productId]);
 
-نضمن لك الجودة والطعم المميز في كل قطعة.`,
-    price: 100,
-    oldPrice: 120,
-    discount: "-10%",
-    images: ["/images/p1.png", "/images/c1.jpg", "/images/logo.png"],
-  };
-
-  const relatedProducts = [
-    {
-      id: 2,
-      image: "/images/p1.png",
-      title: "الطيور البلدي",
-      price: 150,
-      oldPrice: 180,
-      discount: "-15%",
-    },
-    {
-      id: 3,
-      image: "/images/p1.png",
-      title: "البط المشوي",
-      price: 200,
-      oldPrice: 250,
-      discount: "-20%",
-    },
-    {
-      id: 4,
-      image: "/images/p1.png",
-      title: "المجزءات الطازجة",
-      price: 80,
-      oldPrice: 100,
-      discount: "-20%",
-    },
-    {
-      id: 5,
-      image: "/images/p1.png",
-      title: "الدجاج الكامل",
-      price: 120,
-      oldPrice: 150,
-      discount: "-20%",
-    },
-  ];
+  // Related products - can be fetched from category later
+  const relatedProducts = [];
 
   // Update viewing count every minute
   useEffect(() => {
     const interval = setInterval(() => {
       setViewingCount(Math.floor(Math.random() * 31)); // 0 to 30
-    }, 60000); // 1 minute
+    }, 5000); // 1 minute
 
     return () => clearInterval(interval);
   }, []);
@@ -81,6 +71,41 @@ const ClientProduct = () => {
     console.log("Checkout");
   };
 
+  if (loading) {
+    return (
+      <div className="product_page">
+        <div className="product_container">
+          <div style={{ color: "#fff", textAlign: "center", padding: "2rem" }}>
+            جاري التحميل...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <div className="product_page">
+        <div className="product_container">
+          <div style={{ color: "#fff", textAlign: "center", padding: "2rem" }}>
+            {error || "المنتج غير موجود"}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const productImages = product.images?.map((img) => img.url) || [
+    "/images/p1.png",
+  ];
+  const discount =
+    product.isOffer && product.priceBefore
+      ? `-${Math.round(
+          ((product.priceBefore - product.priceAfter) / product.priceBefore) *
+            100
+        )}%`
+      : null;
+
   return (
     <div className="product_page">
       <div className="product_container">
@@ -90,20 +115,18 @@ const ClientProduct = () => {
           <div className="product_images">
             <div className="product_main_image">
               <Image
-                src={product.images[selectedImage]}
-                alt={product.title}
+                src={productImages[selectedImage] || productImages[0]}
+                alt={product.name}
                 width={600}
                 height={600}
                 priority
               />
-              {product.discount && (
-                <span className="product_discount_badge">
-                  {product.discount}
-                </span>
+              {discount && (
+                <span className="product_discount_badge">{discount}</span>
               )}
             </div>
             <div className="product_thumbnails">
-              {product.images.map((image, index) => (
+              {productImages.map((image, index) => (
                 <div
                   key={index}
                   className={`thumbnail ${
@@ -113,7 +136,7 @@ const ClientProduct = () => {
                 >
                   <Image
                     src={image}
-                    alt={`${product.title} ${index + 1}`}
+                    alt={`${product.name} ${index + 1}`}
                     width={100}
                     height={100}
                   />
@@ -124,7 +147,7 @@ const ClientProduct = () => {
 
           {/* Product Info */}
           <div className="product_info">
-            <h1 className="product_title">{product.title}</h1>
+            <h1 className="product_title">{product.name}</h1>
 
             {/* Viewing Counter */}
             <div className="product_viewing">
@@ -138,12 +161,12 @@ const ClientProduct = () => {
             <div className="product_pricing">
               <div className="price_current">
                 <span className="price_label">السعر:</span>
-                <span className="price_value">{product.price} ج.م</span>
+                <span className="price_value">{product.priceAfter} ج.م</span>
               </div>
-              {product.oldPrice && (
+              {product.priceBefore && (
                 <div className="price_old">
                   <span className="old_price_value">
-                    {product.oldPrice} ج.م
+                    {product.priceBefore} ج.م
                   </span>
                 </div>
               )}
@@ -163,50 +186,56 @@ const ClientProduct = () => {
             <div className="product_description">
               <h2 className="description_title">وصف المنتج</h2>
               <div className="description_content">
-                {product.description.split("\n\n").map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
+                {product.description ? (
+                  product.description
+                    .split("\n\n")
+                    .map((paragraph, index) => <p key={index}>{paragraph}</p>)
+                ) : (
+                  <p>لا يوجد وصف متاح لهذا المنتج</p>
+                )}
               </div>
             </div>
           </div>
         </div>
 
         {/* Related Products */}
-        <div className="related_products">
-          <h2 className="related_title">منتجات ذات صلة</h2>
-          <div className="related_products_list">
-            {relatedProducts.map((item) => (
-              <Link
-                key={item.id}
-                href={`/pages/product?id=${item.id}`}
-                className="related_product_item"
-              >
-                <div className="related_product_image">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={200}
-                    height={200}
-                  />
-                  {item.discount && (
-                    <span className="related_discount">{item.discount}</span>
-                  )}
-                </div>
-                <h3 className="related_product_title">{item.title}</h3>
-                <div className="related_product_price">
-                  <span className="related_price_current">
-                    {item.price} ج.م
-                  </span>
-                  {item.oldPrice && (
-                    <span className="related_price_old">
-                      {item.oldPrice} ج.م
+        {relatedProducts.length > 0 && (
+          <div className="related_products">
+            <h2 className="related_title">منتجات ذات صلة</h2>
+            <div className="related_products_list">
+              {relatedProducts.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/pages/product?id=${item.id}`}
+                  className="related_product_item"
+                >
+                  <div className="related_product_image">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      width={200}
+                      height={200}
+                    />
+                    {item.discount && (
+                      <span className="related_discount">{item.discount}</span>
+                    )}
+                  </div>
+                  <h3 className="related_product_title">{item.title}</h3>
+                  <div className="related_product_price">
+                    <span className="related_price_current">
+                      {item.price} ج.م
                     </span>
-                  )}
-                </div>
-              </Link>
-            ))}
+                    {item.oldPrice && (
+                      <span className="related_price_old">
+                        {item.oldPrice} ج.م
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

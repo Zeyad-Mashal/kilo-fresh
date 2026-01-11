@@ -1,8 +1,10 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./DuckSection.css";
 import Image from "next/image";
+import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useRouter } from "next/navigation";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
@@ -10,131 +12,151 @@ import "swiper/css/navigation";
 // import required modules
 import { Navigation } from "swiper/modules";
 import { FaRegEye } from "react-icons/fa";
+import { getAllCategories } from "../../API/Categories/GetCategories";
+import GetByCategory from "../../API/Products/GetByCategory";
 
 const DuckSection = () => {
-  const duckItems = [
-    {
-      id: 1,
-      image: "/images/p1.png",
-      discount: "-10%",
-      title: "البط",
-      price: "100 ج.م",
-      oldPrice: "120 ج.م",
-    },
-    {
-      id: 2,
-      image: "/images/p1.png",
-      discount: "-10%",
-      title: "البط",
-      price: "100 ج.م",
-      oldPrice: "120 ج.م",
-    },
-    {
-      id: 3,
-      image: "/images/p1.png",
-      discount: "-10%",
-      title: "البط",
-      price: "100 ج.م",
-      oldPrice: "120 ج.م",
-    },
-    {
-      id: 4,
-      image: "/images/p1.png",
-      discount: "-10%",
-      title: "البط",
-      price: "100 ج.م",
-      oldPrice: "120 ج.م",
-    },
-    {
-      id: 5,
-      image: "/images/p1.png",
-      discount: "-10%",
-      title: "البط",
-      price: "100 ج.م",
-      oldPrice: "120 ج.م",
-    },
-    {
-      id: 6,
-      image: "/images/p1.png",
-      discount: "-10%",
-      title: "البط",
-      price: "100 ج.م",
-      oldPrice: "120 ج.م",
-    },
-    {
-      id: 7,
-      image: "/images/p1.png",
-      discount: "-10%",
-      title: "البط",
-      price: "100 ج.م",
-      oldPrice: "120 ج.م",
-    },
-    {
-      id: 8,
-      image: "/images/p1.png",
-      discount: "-10%",
-      title: "البط",
-      price: "100 ج.م",
-      oldPrice: "120 ج.م",
-    },
-  ];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [categoryId, setCategoryId] = useState(null);
+  const [categoryName, setCategoryName] = useState("البط");
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchCategoryAndProducts = async () => {
+      setLoading(true);
+      const categoriesResult = await getAllCategories();
+      
+      if (categoriesResult.success && categoriesResult.categories) {
+        const category = categoriesResult.categories.find(
+          (cat) => cat.name === "البط" || cat.name?.includes("بط")
+        );
+        
+        if (category) {
+          const foundCategoryId = category._id || category.id;
+          setCategoryId(foundCategoryId);
+          setCategoryName(category.name);
+          
+          const fetchProducts = () => {
+            return new Promise((resolve) => {
+              let resolved = false;
+              const setProductsData = (productsData) => {
+                if (!resolved) {
+                  const latestProducts = (productsData || []).slice(0, 8);
+                  setProducts(latestProducts);
+                  resolved = true;
+                  setLoading(false);
+                  resolve();
+                }
+              };
+              
+              const setError = () => {
+                if (!resolved) {
+                  setProducts([]);
+                  resolved = true;
+                  setLoading(false);
+                  resolve();
+                }
+              };
+              
+              GetByCategory(setProductsData, setError, () => {}, foundCategoryId);
+            });
+          };
+          
+          await fetchProducts();
+        } else {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+
+    fetchCategoryAndProducts();
+  }, []);
+
+  const handleViewAll = () => {
+    if (categoryId) {
+      router.push(`/pages/shop?category=${categoryId}`);
+    }
+  };
 
   return (
     <div className="DuckSection">
       <div className="DuckSection_container">
-        <h1>البط</h1>
+        <h1>{categoryName}</h1>
         <div className="DuckSection_list">
-          {duckItems.map((item) => (
-            <div
-              key={item.id}
-              className="DuckSection_item DuckSection_item_desktop"
-            >
-              <Image
-                src={item.image}
-                alt="DuckSection_item"
-                width={100}
-                height={100}
-              />
-              <span>{item.discount}</span>
-              <h2>{item.title}</h2>
-              <div className="DuckSection_item_price">
-                <p>{item.price}</p>
-                <p>{item.oldPrice}</p>
-              </div>
-              <button>اشتري الآن</button>
-            </div>
-          ))}
-          <div className="DuckSection_items_mobile">
-            <Swiper
-              slidesPerView={1.5}
-              spaceBetween={10}
-              className="DuckSection_swiper"
-            >
-              {duckItems.map((item) => (
-                <SwiperSlide key={item.id}>
-                  <div className="DuckSection_item">
-                    <Image
-                      src={item.image}
-                      alt="DuckSection_item"
-                      width={100}
-                      height={100}
-                    />
-                    <span>{item.discount}</span>
-                    <h2>{item.title}</h2>
-                    <div className="DuckSection_item_price">
-                      <p>{item.price}</p>
-                      <p>{item.oldPrice}</p>
-                    </div>
-                    <button>اشتري الآن</button>
+          {loading ? (
+            <p style={{ color: "#fff", textAlign: "center", width: "100%" }}>
+              جاري التحميل...
+            </p>
+          ) : products.length > 0 ? (
+            <>
+              {products.map((item) => (
+                <Link
+                  key={item._id}
+                  href={`/pages/product?id=${item._id}`}
+                  className="DuckSection_item DuckSection_item_desktop"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <Image
+                    src={item?.images?.[0]?.url || "/images/p1.png"}
+                    alt={item.name || "product"}
+                    width={100}
+                    height={100}
+                  />
+                  {item.discount && <span>{item.discount}</span>}
+                  <h2>{item.name}</h2>
+                  <div className="DuckSection_item_price">
+                    <p>{item.priceAfter} ج.م</p>
+                    {item.priceBefore && <p>{item.priceBefore} ج.م</p>}
                   </div>
-                </SwiperSlide>
+                  <button>اشتري الآن</button>
+                </Link>
               ))}
-            </Swiper>
-          </div>
-          <button>
-            عرض الكل
-            <FaRegEye />
-          </button>
+              <div className="DuckSection_items_mobile">
+                <Swiper
+                  slidesPerView={1.5}
+                  spaceBetween={10}
+                  className="DuckSection_swiper"
+                >
+                  {products.map((item) => (
+                    <SwiperSlide key={item._id}>
+                      <Link
+                        href={`/pages/product?id=${item._id}`}
+                        className="DuckSection_item"
+                        style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                        <Image
+                          src={item?.images?.[0]?.url || "/images/p1.png"}
+                          alt={item.name || "product"}
+                          width={100}
+                          height={100}
+                        />
+                        {item.discount && <span>{item.discount}</span>}
+                        <h2>{item.name}</h2>
+                        <div className="DuckSection_item_price">
+                          <p>{item.priceAfter} ج.م</p>
+                          {item.priceBefore && <p>{item.priceBefore} ج.م</p>}
+                        </div>
+                        <button>اشتري الآن</button>
+                      </Link>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            </>
+          ) : (
+            <p style={{ color: "#fff", textAlign: "center", width: "100%" }}>
+              لا توجد منتجات
+            </p>
+          )}
+          {products.length > 0 && (
+            <button onClick={handleViewAll}>
+              عرض الكل
+              <FaRegEye />
+            </button>
+          )}
         </div>
       </div>
     </div>

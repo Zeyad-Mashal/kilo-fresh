@@ -42,6 +42,11 @@
   position: relative;
   overflow: hidden;
   border-radius: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.all_categories_item:hover {
+  transform: translateY(-5px);
 }
 .all_categories_item:nth-of-type(2) {
   width: 500px;

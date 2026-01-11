@@ -112,7 +112,7 @@
 .ChickenSection_item > button:hover {
   background-color: #bc9b2d;
 }
-.ChickenSection_list > button {
+.ChickenSection_container > button {
   border: 1px solid #fff;
   padding: 0.5rem 1rem;
   width: 150px;
@@ -123,8 +123,9 @@
   align-items: center;
   gap: 10px;
   transition: 0.3s ease;
+  margin-top: 1rem;
 }
-.ChickenSection_list > button:hover {
+.ChickenSection_container > button:hover {
   background-color: #fff;
   color: #a11712;
 }

@@ -21,8 +21,11 @@ const AllCategories = () => {
   }, []);
 
   const handleCategoryClick = (categoryId) => {
-    router.push(`/pages/shop?category=${categoryId}`);
+    if (categoryId) {
+      router.push(`/pages/shop?category=${categoryId}`);
+    }
   };
+  console.log(categories);
 
   return (
     <section className="all_categories">
@@ -33,27 +36,28 @@ const AllCategories = () => {
           {loading ? (
             <p>جاري التحميل...</p>
           ) : (
-            categories.map((category, index) => (
-              <div
-                key={category._id || index}
-                className="all_categories_item"
-                onClick={() => handleCategoryClick(category._id || category.id)}
-                style={{ cursor: "pointer" }}
-              >
-                <Image
-                  src={category.image.url || "/images/c1.jpg"}
-                  alt={category.name || "category"}
-                  width={100}
-                  height={100}
-                />
-                <h3>{category.name || "اللحوم"}</h3>
-                <p>
-                  {category.productCount
-                    ? `${category.productCount} منتج`
-                    : "لكل انواع اللحوم البلدي"}
-                </p>
-              </div>
-            ))
+            categories.map((category, index) => {
+              const categoryId = category._id;
+              const imageUrl = category.image?.url;
+
+              return (
+                <div
+                  key={categoryId || index}
+                  className="all_categories_item"
+                  onClick={() => handleCategoryClick(categoryId)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Image
+                    src={imageUrl}
+                    alt={category.name || "category"}
+                    width={100}
+                    height={100}
+                  />
+                  <h3>{category.name || "اللحوم"}</h3>
+                  <p>كيلو فريش</p>
+                </div>
+              );
+            })
           )}
         </div>
       </div>
