@@ -3,8 +3,11 @@ import React, { useState, useEffect } from "react";
 import "./product.css";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import { getCartId } from "../../utils/cartId";
 import GetProductById from "../../API/Products/GetProductById";
+import AddToCart from "../../API/Cart/AddToCart";
 
 const ClientProduct = () => {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -12,6 +15,8 @@ const ClientProduct = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [addingToCart, setAddingToCart] = useState(false);
+  const router = useRouter();
   const searchParams = useSearchParams();
   const productId = searchParams.get("id");
 
@@ -44,7 +49,7 @@ const ClientProduct = () => {
 
       fetchProduct();
     } else {
-      setError("Product ID is required");
+      setError("معرف المنتج مطلوب");
       setLoading(false);
     }
   }, [productId]);
@@ -62,13 +67,68 @@ const ClientProduct = () => {
   }, []);
 
   const handleAddToCart = () => {
-    // Add to cart logic
-    console.log("Added to cart");
+    if (!product || !product._id) {
+      toast.error("المنتج غير متاح");
+      return;
+    }
+
+    if (addingToCart) {
+      return;
+    }
+
+    const cartId = getCartId();
+    if (!cartId) {
+      toast.error("لا يمكن الوصول للسلة");
+      return;
+    }
+
+    setAddingToCart(true);
+
+    const addToCart = () => {
+      return new Promise((resolve) => {
+        let resolved = false;
+        const setSuccess = (message) => {
+          if (!resolved) {
+            toast.success(message || "تمت الإضافة للسلة بنجاح");
+            resolved = true;
+            setAddingToCart(false);
+            resolve();
+          }
+        };
+
+        const setError = (errorMessage) => {
+          if (!resolved) {
+            toast.error(errorMessage || "فشلت العملية");
+            resolved = true;
+            setAddingToCart(false);
+            resolve();
+          }
+        };
+
+        const setLoadingState = () => {};
+
+        AddToCart(
+          product._id,
+          cartId,
+          1,
+          setSuccess,
+          setError,
+          setLoadingState
+        );
+      });
+    };
+
+    addToCart();
   };
 
   const handleCheckout = () => {
-    // Checkout logic
-    console.log("Checkout");
+    if (!product || !product._id) {
+      toast.error("المنتج غير متاح");
+      return;
+    }
+
+    // Navigate to checkout with product ID for direct checkout
+    router.push(`/pages/checkout?productId=${product._id}`);
   };
 
   if (loading) {
@@ -174,11 +234,42 @@ const ClientProduct = () => {
 
             {/* Action Buttons */}
             <div className="product_actions">
-              <button className="btn_checkout" onClick={handleCheckout}>
+              <button
+                className="btn_checkout"
+                onClick={handleCheckout}
+                disabled={addingToCart}
+              >
                 إتمام الطلب
               </button>
-              <button className="btn_add_to_cart" onClick={handleAddToCart}>
-                أضف للسلة
+              <button
+                className="btn_add_to_cart"
+                onClick={handleAddToCart}
+                disabled={addingToCart}
+                style={{
+                  opacity: addingToCart ? 0.6 : 1,
+                  cursor: addingToCart ? "not-allowed" : "pointer",
+                  position: "relative",
+                }}
+              >
+                {addingToCart ? (
+                  <>
+                    <span style={{ marginLeft: "8px" }}>جاري الإضافة...</span>
+                    <span
+                      style={{
+                        display: "inline-block",
+                        width: "14px",
+                        height: "14px",
+                        border: "2px solid #fff",
+                        borderTopColor: "transparent",
+                        borderRadius: "50%",
+                        animation: "spin 0.6s linear infinite",
+                        marginRight: "8px",
+                      }}
+                    />
+                  </>
+                ) : (
+                  "أضف للسلة"
+                )}
               </button>
             </div>
 

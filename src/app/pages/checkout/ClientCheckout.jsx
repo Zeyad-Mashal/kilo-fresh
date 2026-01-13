@@ -1,55 +1,133 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./checkout.css";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-hot-toast";
 import { FaCheckCircle, FaTimes } from "react-icons/fa";
+import { getCartId } from "../../utils/cartId";
+import GetCartItems from "../../API/Cart/GetCartItems";
+import GetProductById from "../../API/Products/GetProductById";
+import AddToCart from "../../API/Cart/AddToCart";
+import Checkout from "../../API/Order/Checkout";
 
 const ClientCheckout = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const productId = searchParams.get("productId");
   const [showModal, setShowModal] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     address: "",
   });
   const [errors, setErrors] = useState({});
+  const hasFetchedRef = useRef(false);
+  const hasAddedProductRef = useRef(false);
 
-  // Sample cart items - in real app, this would come from state management
-  const cartItems = [
-    {
-      id: 1,
-      image: "/images/p1.png",
-      title: "الدجاج المشوي",
-      price: 100,
-      oldPrice: 120,
-      discount: "-10%",
-      quantity: 2,
-    },
-    {
-      id: 2,
-      image: "/images/p1.png",
-      title: "الطيور البلدي",
-      price: 150,
-      oldPrice: 180,
-      discount: "-15%",
-      quantity: 1,
-    },
-    {
-      id: 3,
-      image: "/images/p1.png",
-      title: "البط",
-      price: 200,
-      oldPrice: 250,
-      discount: "-20%",
-      quantity: 3,
-    },
-  ];
+  useEffect(() => {
+    if (!hasFetchedRef.current) {
+      hasFetchedRef.current = true;
+      fetchCheckoutItems();
+    }
+  }, [productId]);
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const fetchCheckoutItems = async () => {
+    setLoading(true);
+    const cartId = getCartId();
+    
+    if (!cartId) {
+      toast.error("لا يمكن الوصول للسلة");
+      setLoading(false);
+      return;
+    }
+
+    // First, get current cart items
+    const fetchItems = () => {
+      return new Promise((resolve) => {
+        let resolved = false;
+        const setItems = (items) => {
+          if (!resolved) {
+            resolved = true;
+            resolve(items || []);
+          }
+        };
+        
+        const setErrorData = (errorMessage) => {
+          if (!resolved) {
+            toast.error(errorMessage || "فشل تحميل السلة");
+            resolved = true;
+            resolve([]);
+          }
+        };
+        
+        GetCartItems(cartId, setItems, setErrorData, () => {});
+      });
+    };
+    
+    let items = await fetchItems();
+    
+    // If productId exists and product is not in cart, add it (only once)
+    if (productId && !hasAddedProductRef.current) {
+      // Check if product exists in cart - check multiple possible fields
+      const productExists = items.some(item => {
+        if (!item) return false;
+        const product = item.product || {};
+        const itemProductId = product._id || product.id || item.productId;
+        // Convert both to strings for comparison
+        return String(itemProductId) === String(productId);
+      });
+      
+      if (!productExists) {
+        // Mark as added to prevent duplicate
+        hasAddedProductRef.current = true;
+        
+        // Product not in cart, add it only once
+        const addToCartFirst = () => {
+          return new Promise((resolve) => {
+            let resolved = false;
+            const setSuccess = () => {
+              if (!resolved) {
+                resolved = true;
+                resolve();
+              }
+            };
+            
+            const setError = () => {
+              if (!resolved) {
+                resolved = true;
+                resolve();
+              }
+            };
+            
+            AddToCart(productId, cartId, 1, setSuccess, setError, () => {});
+          });
+        };
+        
+        await addToCartFirst();
+        // Wait a bit for the backend to process and update
+        await new Promise(resolve => setTimeout(resolve, 500));
+        // Fetch cart items again after adding
+        items = await fetchItems();
+      } else {
+        // Product already exists, just use current items
+        hasAddedProductRef.current = true;
+      }
+    }
+    
+    setCartItems(items);
+    setLoading(false);
+  };
+
+  const subtotal = cartItems.reduce((sum, item) => {
+    const product = item.product || item;
+    const price = product?.priceAfter || item.priceAfter || item.price || 0;
+    const quantity = item.quantity || 1;
+    return sum + price * quantity;
+  }, 0);
   const shipping = 50;
   const total = subtotal + shipping;
 
@@ -85,21 +163,105 @@ const ClientCheckout = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleCheckout = (e) => {
+  const handleCheckout = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      setShowModal(true);
+    if (!validateForm()) {
+      return;
     }
+
+    if (cartItems.length === 0) {
+      toast.error("السلة فارغة");
+      return;
+    }
+
+    const cartId = getCartId();
+    if (!cartId) {
+      toast.error("لا يمكن الوصول للسلة");
+      return;
+    }
+
+    setSubmitting(true);
+
+    const checkoutOrder = () => {
+      return new Promise((resolve) => {
+        let resolved = false;
+        const setSuccess = (message) => {
+          if (!resolved) {
+            toast.success(message || "تم إتمام الطلب بنجاح");
+            setShowModal(true);
+            setSubmitting(false);
+            resolved = true;
+            resolve();
+          }
+        };
+        
+        const setError = (errorMessage) => {
+          if (!resolved) {
+            toast.error(errorMessage || "فشلت العملية");
+            setSubmitting(false);
+            resolved = true;
+            resolve();
+          }
+        };
+        
+        const orderData = {
+          name: formData.name,
+          phone: formData.phone,
+          address: formData.address,
+          cartId: cartId,
+          shipping: shipping
+        };
+        
+        Checkout(orderData, setSuccess, setError, () => {});
+      });
+    };
+
+    await checkoutOrder();
   };
 
   const handleCompleteOrder = () => {
-    // In real app, send order to backend
-    setTimeout(() => {
-      router.push("/");
-    }, 2000);
+    router.push("/");
   };
 
-  const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalQuantity = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+
+  if (loading) {
+    return (
+      <div className="checkout_page">
+        <div className="checkout_container">
+          <div style={{ color: "#fff", textAlign: "center", padding: "2rem" }}>
+            جاري التحميل...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (cartItems.length === 0) {
+    return (
+      <div className="checkout_page">
+        <div className="checkout_container">
+          <div style={{ color: "#fff", textAlign: "center", padding: "2rem" }}>
+            <h2>السلة فارغة</h2>
+            <button
+              onClick={() => router.push("/pages/shop")}
+              style={{
+                marginTop: "1rem",
+                padding: "0.75rem 2rem",
+                background: "#d4af37",
+                color: "#fff",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+              }}
+            >
+              متابعة التسوق
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="checkout_page">
@@ -112,42 +274,52 @@ const ClientCheckout = () => {
             <div className="summary_card">
               <h2 className="summary_card_title">ملخص الطلب</h2>
               <div className="summary_items_list">
-                {cartItems.map((item) => (
-                  <div key={item.id} className="summary_item">
-                    <div className="summary_item_image">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        width={80}
-                        height={80}
-                      />
-                      {item.discount && (
-                        <span className="summary_item_discount">
-                          {item.discount}
-                        </span>
-                      )}
-                    </div>
-                    <div className="summary_item_details">
-                      <h3>{item.title}</h3>
-                      <div className="summary_item_price_info">
-                        <span className="summary_item_price">
-                          {item.price} ج.م
-                        </span>
-                        {item.oldPrice && (
-                          <span className="summary_item_old_price">
-                            {item.oldPrice} ج.م
+                {cartItems.map((item) => {
+                  const itemId = item._id || item.id;
+                  const product = item.product || item;
+                  const itemPrice = product?.priceAfter || item.priceAfter || item.price || 0;
+                  const itemOldPrice = product?.priceBefore || item.priceBefore || item.oldPrice;
+                  const itemQuantity = item.quantity || 1;
+                  const itemImage = product?.images?.[0]?.url || item.images?.[0]?.url || item.image || "/images/p1.png";
+                  const itemName = product?.name || item.name || item.title || "منتج";
+                  
+                  return (
+                    <div key={itemId} className="summary_item">
+                      <div className="summary_item_image">
+                        <Image
+                          src={itemImage}
+                          alt={itemName}
+                          width={80}
+                          height={80}
+                        />
+                        {item.discount && (
+                          <span className="summary_item_discount">
+                            {item.discount}
                           </span>
                         )}
                       </div>
-                      <span className="summary_item_quantity">
-                        الكمية: {item.quantity}
-                      </span>
+                      <div className="summary_item_details">
+                        <h3>{itemName}</h3>
+                        <div className="summary_item_price_info">
+                          <span className="summary_item_price">
+                            {itemPrice} ج.م
+                          </span>
+                          {itemOldPrice && (
+                            <span className="summary_item_old_price">
+                              {itemOldPrice} ج.م
+                            </span>
+                          )}
+                        </div>
+                        <span className="summary_item_quantity">
+                          الكمية: {itemQuantity}
+                        </span>
+                      </div>
+                      <div className="summary_item_total">
+                        {itemPrice * itemQuantity} ج.م
+                      </div>
                     </div>
-                    <div className="summary_item_total">
-                      {item.price * item.quantity} ج.م
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               <div className="summary_totals">
                 <div className="summary_total_row">
@@ -228,8 +400,38 @@ const ClientCheckout = () => {
                   )}
                 </div>
 
-                <button type="submit" className="checkout_submit_btn">
-                  إتمام الطلب
+                <button 
+                  type="submit" 
+                  className="checkout_submit_btn"
+                  disabled={submitting}
+                  style={{
+                    opacity: submitting ? 0.6 : 1,
+                    cursor: submitting ? 'not-allowed' : 'pointer',
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  {submitting ? (
+                    <>
+                      <span>جاري المعالجة...</span>
+                      <span 
+                        style={{
+                          display: 'inline-block',
+                          width: '14px',
+                          height: '14px',
+                          border: '2px solid #fff',
+                          borderTopColor: 'transparent',
+                          borderRadius: '50%',
+                          animation: 'spin 0.6s linear infinite'
+                        }}
+                      />
+                    </>
+                  ) : (
+                    'إتمام الطلب'
+                  )}
                 </button>
               </form>
             </div>
@@ -273,14 +475,22 @@ const ClientCheckout = () => {
                 </div>
               </div>
               <div className="modal_items_summary">
-                {cartItems.map((item) => (
-                  <div key={item.id} className="modal_item_row">
-                    <span>
-                      {item.title} × {item.quantity}
-                    </span>
-                    <span>{item.price * item.quantity} ج.م</span>
-                  </div>
-                ))}
+                {cartItems.map((item) => {
+                  const itemId = item._id || item.id;
+                  const product = item.product || item;
+                  const itemName = product?.name || item.name || item.title || "منتج";
+                  const itemPrice = product?.priceAfter || item.priceAfter || item.price || 0;
+                  const itemQuantity = item.quantity || 1;
+                  
+                  return (
+                    <div key={itemId} className="modal_item_row">
+                      <span>
+                        {itemName} × {itemQuantity}
+                      </span>
+                      <span>{itemPrice * itemQuantity} ج.م</span>
+                    </div>
+                  );
+                })}
               </div>
               <div className="modal_total_section">
                 <div className="modal_total_row">

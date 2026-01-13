@@ -26,7 +26,7 @@ const GetAllProducts = async (setAllProducts, setError, setLoading) => {
             }
         }
     } catch (error) {
-        setError('An error occurred');
+        setError('حدث خطأ');
         setLoading(false)
     }
 }

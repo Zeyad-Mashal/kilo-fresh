@@ -29,12 +29,7 @@ const Hero = () => {
         className="mySwiper"
       >
         <SwiperSlide>
-          <Image
-            src="/images/banner1.jpg"
-            alt="hero"
-            width={1000}
-            height={1000}
-          />
+          <Image src="/images/kilo.jpg" alt="hero" width={1000} height={1000} />
         </SwiperSlide>
         <SwiperSlide>
           <Image

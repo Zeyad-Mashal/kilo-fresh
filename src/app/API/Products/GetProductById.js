@@ -21,7 +21,7 @@ const GetProductById = async (setProduct, setError, setLoading, productId) => {
                 setError(result.message);
                 setLoading(false)
             } else if (response.status == 404) {
-                setError(result.message || 'Product not found');
+                setError(result.message || 'المنتج غير موجود');
                 setLoading(false)
             } else {
                 setError(result.message);
@@ -29,7 +29,7 @@ const GetProductById = async (setProduct, setError, setLoading, productId) => {
             }
         }
     } catch (error) {
-        setError('An error occurred');
+        setError('حدث خطأ');
         setLoading(false)
     }
 }

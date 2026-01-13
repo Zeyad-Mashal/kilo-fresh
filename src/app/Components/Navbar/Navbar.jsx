@@ -7,7 +7,7 @@ import { getAllCategories } from "../../API/Categories/GetCategories";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount] = useState(3); // Example cart count
+  // const [cartCount] = useState(3);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -116,9 +116,9 @@ const Navbar = () => {
                   <circle cx="20" cy="21" r="1"></circle>
                   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                 </svg>
-                {cartCount > 0 && (
+                {/* {cartCount > 0 && (
                   <span className="cart-counter">{cartCount}</span>
-                )}
+                )} */}
               </button>
             </div>
 
@@ -178,7 +178,9 @@ const Navbar = () => {
                   href={`/pages/shop?category=${category._id || category.id}`}
                   onClick={(e) => {
                     e.preventDefault();
-                    router.push(`/pages/shop?category=${category._id || category.id}`);
+                    router.push(
+                      `/pages/shop?category=${category._id || category.id}`
+                    );
                     setIsMenuOpen(false);
                   }}
                 >

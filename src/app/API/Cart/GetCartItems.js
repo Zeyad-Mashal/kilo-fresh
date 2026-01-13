@@ -1,22 +1,26 @@
-const URL = "https://kilo-fresh-back.vercel.app/api/products/product/getByCategory/";
-const GetByCategory = async (setProductsByCategory, setError, setLoading, categoryId) => {
+const URL = "https://kilo-fresh-back.vercel.app/api/cart/getItems";
+const GetCartItems = async (cartId, setCartItems, setError, setLoading) => {
     setLoading(true)
     try {
-        const response = await fetch(URL + categoryId, {
+        if (!cartId) {
+            setError('معرف السلة مطلوب');
+            setLoading(false);
+            return;
+        }
+
+        const response = await fetch(`${URL}?cartId=${cartId}`, {
             method: 'GET',
         });
 
         const result = await response.json();
 
         if (response.ok) {
-            setProductsByCategory(result.products)
+            setCartItems(result.cartItems || result.items || [])
             setLoading(false)
-
         } else {
             if (response.status == 400) {
                 setError(result.message);
                 setLoading(false)
-
             } else if (response.status == 403) {
                 setError(result.message);
                 setLoading(false)
@@ -26,8 +30,9 @@ const GetByCategory = async (setProductsByCategory, setError, setLoading, catego
             }
         }
     } catch (error) {
-        setError('حدث خطأ');
+        setError('حدث خطأ في الاتصال');
         setLoading(false)
     }
 }
-export default GetByCategory;
+export default GetCartItems;
+

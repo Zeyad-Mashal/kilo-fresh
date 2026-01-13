@@ -26,7 +26,7 @@ const GetProductsOffers = async (setAllOffers, setError, setLoading) => {
             }
         }
     } catch (error) {
-        setError('An error occurred');
+        setError('حدث خطأ');
         setLoading(false)
     }
 }
