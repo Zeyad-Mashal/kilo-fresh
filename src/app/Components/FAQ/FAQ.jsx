@@ -66,7 +66,7 @@ const FAQ = () => {
       <div className="faq_contact">
         <p className="faq_contact_title">للشكاوي و الاقتراحات</p>
         <a
-          href="https://wa.me/966555555555"
+          href="https://wa.me/201155551847"
           target="_blank"
           rel="noopener noreferrer"
           className="faq_whatsapp_link"

@@ -4,7 +4,7 @@ import "./Banner3.css";
 const Banner3 = () => {
   return (
     <div className="Banner3">
-      <Image src="/images/b3.webp" alt="banner3" width={2000} height={2000} />
+      <Image src="/images/b4.jpg" alt="banner3" width={2000} height={2000} />
     </div>
   );
 };
