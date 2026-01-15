@@ -8,7 +8,7 @@ import LocalBirdsSection from "./Components/LocalBirdsSection/LocalBirdsSection"
 import DuckSection from "./Components/DuckSection/DuckSection";
 import CutsSection from "./Components/CutsSection/CutsSection";
 import Banner3 from "./Components/Banner3/Banner3";
-
+import FAQ from "./Components/FAQ/FAQ";
 export default function Home() {
   return (
     <div>
@@ -21,6 +21,7 @@ export default function Home() {
       <Banner3 />
       <DuckSection />
       <CutsSection />
+      <FAQ />
     </div>
   );
 }
