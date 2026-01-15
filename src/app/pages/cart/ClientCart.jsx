@@ -238,8 +238,8 @@ const ClientCart = () => {
                         <Image
                           src={itemImage}
                           alt={itemName}
-                          width={120}
-                          height={120}
+                          width={1200}
+                          height={1200}
                         />
                         {item.discount && (
                           <span className="cart_item_discount">

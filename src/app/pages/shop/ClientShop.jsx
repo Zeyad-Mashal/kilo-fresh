@@ -134,8 +134,8 @@ const ClientShop = () => {
                   <Image
                     src={item?.images?.[0]?.url || "/images/p1.png"}
                     alt={item.name || "product"}
-                    width={100}
-                    height={100}
+                    width={2000}
+                    height={2000}
                   />
                   <h2>{item.name}</h2>
                   <div className="shop_item_price">

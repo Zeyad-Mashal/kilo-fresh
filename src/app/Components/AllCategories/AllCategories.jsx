@@ -50,8 +50,8 @@ const AllCategories = () => {
                   <Image
                     src={imageUrl}
                     alt={category.name || "category"}
-                    width={100}
-                    height={100}
+                    width={2000}
+                    height={2000}
                   />
                   <h3>{category.name || "اللحوم"}</h3>
                   <p>كيلو فريش</p>

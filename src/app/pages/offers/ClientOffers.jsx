@@ -56,8 +56,8 @@ const ClientOffers = () => {
                 <Image
                   src={offer?.images?.[0]?.url || "/images/p1.png"}
                   alt={offer.name || "offer image"}
-                  width={100}
-                  height={100}
+                  width={2000}
+                  height={2000}
                 />
                 <span>
                   {offer.discount ||

@@ -111,8 +111,8 @@ const ChickenSection = () => {
                   <Image
                     src={item?.images?.[0]?.url || "/images/p1.png"}
                     alt={item.name || "product"}
-                    width={100}
-                    height={100}
+                    width={2000}
+                    height={2000}
                   />
                   {item.discount && <span>{item.discount}</span>}
                   <h2>{item.name}</h2>
@@ -139,8 +139,8 @@ const ChickenSection = () => {
                         <Image
                           src={item?.images?.[0]?.url || "/images/p1.png"}
                           alt={item.name || "product"}
-                          width={100}
-                          height={100}
+                          width={2000}
+                          height={2000}
                         />
                         {item.discount && <span>{item.discount}</span>}
                         <h2>{item.name}</h2>

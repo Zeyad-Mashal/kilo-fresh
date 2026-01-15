@@ -35,8 +35,8 @@ const Offers = () => {
             <Image
               src={"/images/offers.jpg"}
               alt="offers"
-              width={100}
-              height={100}
+              width={2000}
+              height={2000}
             />
             <h2>العروض الحاليه</h2>
             <p>{offersItems.length} منتج</p>
@@ -51,8 +51,8 @@ const Offers = () => {
               <Image
                 src={item?.images[0]?.url}
                 alt="offers"
-                width={100}
-                height={100}
+                width={2000}
+                height={2000}
               />
               <span>
                 {item.discount ||
@@ -82,8 +82,8 @@ const Offers = () => {
                     <Image
                       src={item?.images[0]?.url}
                       alt="offers"
-                      width={100}
-                      height={100}
+                      width={2000}
+                      height={2000}
                     />
                     <span>
                       {item.discount ||

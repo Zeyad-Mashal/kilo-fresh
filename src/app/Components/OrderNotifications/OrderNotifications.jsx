@@ -147,8 +147,8 @@ const OrderNotifications = () => {
               <Image
                 src={currentNotification.productImage}
                 alt={currentNotification.productName}
-                width={90}
-                height={90}
+                width={2000}
+                height={2000}
               />
               <div className="notification_price">
                 {currentNotification.productPrice} ج.م
