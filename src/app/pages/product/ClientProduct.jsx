@@ -177,8 +177,8 @@ const ClientProduct = () => {
               <Image
                 src={productImages[selectedImage] || productImages[0]}
                 alt={product.name}
-                width={600}
-                height={600}
+                width={1000}
+                height={1000}
                 priority
               />
               {discount && (
@@ -197,8 +197,8 @@ const ClientProduct = () => {
                   <Image
                     src={image}
                     alt={`${product.name} ${index + 1}`}
-                    width={100}
-                    height={100}
+                    width={1000}
+                    height={1000}
                   />
                 </div>
               ))}
@@ -230,6 +230,21 @@ const ClientProduct = () => {
                   </span>
                 </div>
               )}
+            </div>
+
+            
+            {/* Description */}
+            <div className="product_description">
+              <h2 className="description_title">وصف المنتج</h2>
+              <div className="description_content">
+                {product.description ? (
+                  product.description
+                    .split("\n\n")
+                    .map((paragraph, index) => <p key={index}>{paragraph}</p>)
+                ) : (
+                  <p>لا يوجد وصف متاح لهذا المنتج</p>
+                )}
+              </div>
             </div>
 
             {/* Action Buttons */}
@@ -273,19 +288,6 @@ const ClientProduct = () => {
               </button>
             </div>
 
-            {/* Description */}
-            <div className="product_description">
-              <h2 className="description_title">وصف المنتج</h2>
-              <div className="description_content">
-                {product.description ? (
-                  product.description
-                    .split("\n\n")
-                    .map((paragraph, index) => <p key={index}>{paragraph}</p>)
-                ) : (
-                  <p>لا يوجد وصف متاح لهذا المنتج</p>
-                )}
-              </div>
-            </div>
           </div>
         </div>
 
