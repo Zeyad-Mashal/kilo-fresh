@@ -19,7 +19,7 @@ const ChickenSection = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(null);
-  const [categoryName, setCategoryName] = useState("الدجاج");
+  const [categoryName, setCategoryName] = useState("الدواجن");
   const router = useRouter();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const ChickenSection = () => {
       if (categoriesResult.success && categoriesResult.categories) {
         // Find category by name (الدجاج)
         const category = categoriesResult.categories.find(
-          (cat) => cat.name === "الدجاج" || cat.name?.includes("دجاج")
+          (cat) => cat.name === "الدواجن" || cat.name?.includes("دواجن")
         );
 
         if (category) {

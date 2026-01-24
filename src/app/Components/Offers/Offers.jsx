@@ -40,9 +40,9 @@ const Offers = () => {
             />
             <h2>العروض الحاليه</h2>
             <p>{offersItems.length} منتج</p>
-            <button>عرض الكل</button>
+            <button onClick={() => router.push("/pages/offers")}>عرض الكل</button>
           </div>
-          {offersItems.map((item) => (
+          {offersItems.slice(0, 10).map((item) => (
             <div
               key={item._id}
               className="offers_item offers_item_desktop"
@@ -73,7 +73,7 @@ const Offers = () => {
               spaceBetween={10}
               className="offers_swiper"
             >
-              {offersItems.map((item) => (
+              {offersItems.slice(0, 10).map((item) => (
                 <SwiperSlide key={item._id}>
                   <div
                     className="offers_item"

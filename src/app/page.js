@@ -17,9 +17,9 @@ export default function Home() {
       <Offers />
       <Banner2 />
       <ChickenSection />
-      <LocalBirdsSection />
+      {/* <LocalBirdsSection /> */}
       <Banner3 />
-      <DuckSection />
+      {/* <DuckSection /> */}
       <CutsSection />
       <FAQ />
     </div>
